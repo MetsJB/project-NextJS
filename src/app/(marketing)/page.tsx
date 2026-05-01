@@ -3,14 +3,10 @@ import Link from 'next/link';
 const page = () => {
   return (
     <>
-      <h1 style={{ marginBottom: '20px' }}>Добро пожаловать в NextDash</h1>
+      <h1 className='mb-3'>Добро пожаловать в NextDash</h1>
       <Link
         href={'/dashboard'}
-        style={{
-          marginTop: '100px',
-          padding: '10px 8px',
-          border: '1px solid black',
-        }}
+        className='px-2 py-1 border border-zinc-600'
       >
         Перейти
       </Link>

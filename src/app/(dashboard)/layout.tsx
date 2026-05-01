@@ -9,9 +9,9 @@ export default function dashboardLayout({
   return (
     <>
       <Header />
-      <div style={{ display: 'flex', flex: 1 }}>
+      <div className='flex flex-1 min-w-0'>
         <Sidebar />
-        <div style={{ padding: '16px', width: '100%' }}>{children}</div>
+        <div className='p-4 w-full min-w-0'>{children}</div>
       </div>
     </>
   );

@@ -8,7 +8,7 @@ export default function marketingLayout({
   return (
     <>
       <Header />
-      <div style={{ padding: '16px' }}>{children}</div>
+      <div className='p-4'>{children}</div>
     </>
   );
 }

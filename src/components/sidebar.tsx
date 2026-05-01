@@ -3,7 +3,6 @@
 import cn from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import cls from './sidebar.module.css';
 
 const navItems = [
   { name: 'Обзор', path: '/dashboard' },
@@ -17,12 +16,12 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className={cls.sidebar}>
-      <nav className={cls.nav}>
+    <aside className='w-52 bg-zinc-100 flex flex-col '>
+      <nav className='flex flex-col'>
         {navItems.map((item, i) => (
           <Link
-            className={cn(cls.btn, {
-              [cls.active]: item.path === pathname,
+            className={cn('px-4 py-2 hover:bg-zinc-200 ', {
+              'bg-zinc-900 text-white': item.path === pathname,
             })}
             key={i}
             href={item.path}
@@ -31,9 +30,9 @@ export function Sidebar() {
           </Link>
         ))}
       </nav>
-      <button className={cn(cls.btn, cls.out)}>
+      <button className='px-4 py-2 mt-auto border-t hover:bg-zinc-200 text-left'>
         Выйти
       </button>
     </aside>
-  )
+  );
 }
