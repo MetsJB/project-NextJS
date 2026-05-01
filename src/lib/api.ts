@@ -48,14 +48,14 @@ export interface Photo {
   thumbnailUrl: string;
 }
 
-export async function getchPosts(page = 1, limit = 10): Promise<Post[]> {
+export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
   const res = await fetch(`${BASE_URL}/posts?_page=${page}&_limit=${limit}`);
 
   if (!res.ok) throw new Error('Failed to fetch posts');
   return res.json();
 }
 
-export async function getchPost(id: string): Promise<Post> {
+export async function fetchPost(id: string): Promise<Post> {
   const res = await fetch(`${BASE_URL}/posts/${id}`, {
     next: {
       revalidate: 60,
