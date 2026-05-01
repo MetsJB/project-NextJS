@@ -6,7 +6,6 @@ interface PostProps {
   params: Promise<{ id: string }>;
 }
 
-export const revalidate = 60;
 
 export async function generateStaticParams() {
   return Array.from({ length: 10 }, (_, i) => ({

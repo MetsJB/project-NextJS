@@ -107,3 +107,15 @@ export async function fetchPhotos(albumId: string): Promise<Photo[]> {
   if (!res.ok) throw new Error('Failed to fetch photos');
   return res.json();
 }
+
+export async function fetchUserPosts(userId: string): Promise<Post[]> {
+  const res = await fetch(`${BASE_URL}/posts?userId=${userId}`);
+  if (!res.ok) throw new Error('Failed to fetch user posts');
+  return res.json();
+}
+
+export async function fetchUserAlbums(userId: string): Promise<Album[]> {
+  const res = await fetch(`${BASE_URL}/albums?userId=${userId}`);
+  if (!res.ok) throw new Error('Failed to fetch user albums');
+  return res.json();
+}
