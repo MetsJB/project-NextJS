@@ -21,7 +21,8 @@ export function Sidebar() {
         {navItems.map((item, i) => (
           <Link
             className={cn('px-4 py-2 hover:bg-zinc-200 ', {
-              'bg-zinc-900 text-white': item.path === pathname,
+              'bg-zinc-900 text-white hover:bg-zinc-900':
+                item.path === pathname,
             })}
             key={i}
             href={item.path}

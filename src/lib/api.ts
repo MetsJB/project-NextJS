@@ -49,7 +49,9 @@ export interface Photo {
 }
 
 export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
-  const res = await fetch(`${BASE_URL}/posts?_page=${page}&_limit=${limit}`);
+  const res = await fetch(`${BASE_URL}/posts?_page=${page}&_limit=${limit}`, {
+    cache:'no-store'
+  });
 
   if (!res.ok) throw new Error('Failed to fetch posts');
   return res.json();
@@ -68,7 +70,7 @@ export async function fetchPost(id: string): Promise<Post> {
 
 export async function fetchComments(postId: string): Promise<Comment[]> {
   const res = await fetch(`${BASE_URL}/comments?postId=${postId}`);
- 
+
   if (!res.ok) throw new Error('Failed to fetch comments');
   return res.json();
 }
