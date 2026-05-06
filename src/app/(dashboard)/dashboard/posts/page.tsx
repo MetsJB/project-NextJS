@@ -14,7 +14,15 @@ const page = async (props: PostsPage) => {
 
   return (
     <>
-      <h2>Посты</h2>
+      <div className='flex items-center justify-between mb-6'>
+        <h2 className='text-lg'>Посты</h2>
+        <Link
+          className='px-3 py-1 bg-zinc-200 hover:bg-zinc-300 rounded border border-zinc-200 transition-colors'
+          href='/dashboard/posts/create'
+        >
+          Создать статью
+        </Link>
+      </div>
       <table className='border border-collapse  w-full '>
         <thead className='border-b border-zinc-200'>
           <tr className='hover:bg-zinc-50'>

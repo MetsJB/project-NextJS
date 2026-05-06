@@ -50,10 +50,9 @@ export interface Photo {
 
 export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
   const res = await fetch(`${BASE_URL}/posts?_page=${page}&_limit=${limit}`, {
-    cache:'no-store'
-    // next: {
-    //   revalidate: 60,
-    // },
+    next: {
+      revalidate: 60,
+    },
   });
 
   if (!res.ok) throw new Error('Failed to fetch posts');
