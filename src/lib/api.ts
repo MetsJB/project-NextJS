@@ -1,4 +1,5 @@
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
+export const PHOTO_URL = 'https://picsum.dev/200/200?';
 
 // Базовые типы
 export interface Post {
