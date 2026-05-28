@@ -1,3 +1,4 @@
+import PostsTable from './_components/postsTable';
 import { fetchPosts } from '@/lib/api';
 import Link from 'next/link';
 
@@ -23,36 +24,7 @@ const page = async (props: PostsPage) => {
           Создать статью
         </Link>
       </div>
-      <table className='border border-collapse  w-full '>
-        <thead className='border-b border-zinc-200'>
-          <tr className='hover:bg-zinc-50'>
-            <th className='text-left p-2 text-sm text-zinc-500 font-medium'>
-              ID
-            </th>
-            <th className='text-left p-2 text-sm text-zinc-500 font-medium'>
-              Заголовок
-            </th>
-            <th className='text-left p-2 text-sm text-zinc-500 font-medium'>
-              Автор
-            </th>
-            <th className='text-left p-2 text-sm text-zinc-500 font-medium'>
-              Действия
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post) => (
-            <tr className='hover:bg-zinc-50' key={post.id}>
-              <td className='p-2 border-b border-zinc-100'> {post.id}</td>
-              <td className='p-2 border-b border-zinc-100'> {post.title}</td>
-              <td className='p-2 border-b border-zinc-100'> {post.userId}</td>
-              <td className='p-2 border-b border-zinc-100'>
-                <Link href={`/dashboard/posts/${post.id}`}>Просмотр</Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <PostsTable posts={posts} />
       <div className='flex items-center gap-2 mt-6'>
         {pageSearch === 1 ? (
           <div className='text-zinc-300 px-3 py-1'>Назад</div>
