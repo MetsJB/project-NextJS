@@ -1,7 +1,11 @@
-import { fetchPosts } from '@/lib/api';
+import RecentPosts from '@/app/(dashboard)/dashboard/_components/recentPosts';
+import RecentPostsSkeleton from '@/app/(dashboard)/dashboard/_components/recentPostsSkeleton';
+import { cookies } from 'next/headers';
+import { Suspense } from 'react';
 
 const page = async () => {
-  const posts = await fetchPosts(1, 5);
+
+  await cookies()
 
   return (
     <div>
@@ -27,17 +31,9 @@ const page = async () => {
       <h3 className='font-medium text-lg text-zinc-800 mb-3'>
         Последние посты
       </h3>
-      <div className='bg-white border border-zinc-200 rounded-lg p-4 '>
-        {posts.map((post) => (
-          <div
-            className='border-b border-zinc-100 pb-2 mb-2 last:border-b-0 min-w-0'
-            key={post.id}
-          >
-            <h4 className='font-medium'>{post.title}</h4>
-            <p className='text-sm text-zinc-500 truncate'>{post.body}</p>
-          </div>
-        ))}
-      </div>
+      <Suspense fallback={<RecentPostsSkeleton />}>
+        <RecentPosts />
+      </Suspense>
     </div>
   );
 };
