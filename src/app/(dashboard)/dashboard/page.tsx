@@ -1,11 +1,13 @@
 import RecentPosts from '@/app/(dashboard)/dashboard/_components/recentPosts';
 import RecentPostsSkeleton from '@/app/(dashboard)/dashboard/_components/recentPostsSkeleton';
-import { cookies } from 'next/headers';
+import { fetchAlbums, fetchAllComments, fetchAllPosts, fetchUsers } from '@/lib/api';
 import { Suspense } from 'react';
 
 const page = async () => {
-
-  await cookies()
+  const posts = (await fetchAllPosts()).length;
+  const users = (await fetchUsers()).length;
+  const comments = (await fetchAllComments()).length;
+  const albums = (await fetchAlbums()).length;
 
   return (
     <div>
@@ -13,19 +15,19 @@ const page = async () => {
       <div className='grid grid-cols-4 gap-4 mb-5 text-center'>
         <div className='bg-white border border-zinc-200 rounded-lg p-4 '>
           <p className='text-gray-500 text-sm'>Всего постов</p>
-          <p className='font-semibold text-lg'>100</p>
+          <p className='font-semibold text-lg'>{posts}</p>
         </div>
         <div className='bg-white border border-zinc-200 rounded-lg p-4'>
           <p className='text-gray-500 text-sm'>Пользователей</p>
-          <p className='font-semibold text-lg'>10</p>
+          <p className='font-semibold text-lg'>{users}</p>
         </div>
         <div className='bg-white border border-zinc-200 rounded-lg p-4'>
           <p className='text-gray-500 text-sm'>Комментариев</p>
-          <p className='font-semibold text-lg'>500</p>
+          <p className='font-semibold text-lg'>{comments}</p>
         </div>
         <div className='bg-white border border-zinc-200 rounded-lg p-4'>
           <p className='text-gray-500 text-sm'>Альбомов</p>
-          <p className='font-semibold text-lg'>100</p>
+          <p className='font-semibold text-lg'>{albums}</p>
         </div>
       </div>
       <h3 className='font-medium text-lg text-zinc-800 mb-3'>

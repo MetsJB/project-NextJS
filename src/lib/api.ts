@@ -11,6 +11,12 @@ export async function fetchPosts(page = 1, limit = 10) {
   return posts;
 }
 
+export async function fetchAllPosts() {
+  const posts = await prisma.post.findMany();
+
+  return posts;
+}
+
 export async function fetchPost(id: string) {
   const post = prisma.post.findUnique({
     where: { id: Number(id) },
@@ -19,12 +25,19 @@ export async function fetchPost(id: string) {
   return post;
 }
 
+
 export async function fetchComments(postId: string) {
   const comments = prisma.comment.findMany({
     where: {
       postId: Number(postId),
     },
   });
+
+  return comments;
+}
+
+export async function fetchAllComments() {
+  const comments = prisma.comment.findMany();
 
   return comments;
 }

@@ -1,5 +1,6 @@
 'use server';
 
+import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -14,14 +15,15 @@ export async function createPost(
     return { error: 'Заполните все поля' };
   }
 
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
-    body: JSON.stringify({ title, body, userId: 1 }),
-    headers: { 'Content-Type': 'application/json' },
+  const res = await prisma.post.create({
+    data: {
+      title: title.trim(),
+      body: body.trim(),
+      userId: 1,
+    },
   });
 
-  const value = await res.json();
-  console.log('VALUE', value);
+  console.log(res)
 
   revalidatePath('/dashboard/posts');
   redirect('/dashboard/posts');
