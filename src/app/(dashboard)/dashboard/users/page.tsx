@@ -17,7 +17,9 @@ const page = async () => {
             <p className='font-semibold text-lg'>{user.name}</p>
             <p className='text-sm text-zinc-500'>{user.username}</p>
             <p className='text-sm'>{user.email}</p>
-            <p className='text-sm text-zinc-500'>{user.address.city}</p>
+            <p className='text-sm text-zinc-500'>
+              {user?.address?.city ?? 'Здесь должен быть адрес'}
+            </p>
             <Link
               className='mt-2 inline-block text-sm text-zinc-900 hover:underline'
               href={`/dashboard/users/${user.id}`}

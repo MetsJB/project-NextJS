@@ -19,7 +19,7 @@ const page = async (props: PostProps) => {
     fetchPost(id).catch(() => notFound()),
     fetchComments(id),
   ]);
-  const user = await fetchUser(String(post.userId));
+  const user = await fetchUser(String(post?.userId));
 
   return (
     <div>
@@ -29,15 +29,15 @@ const page = async (props: PostProps) => {
       >
         Назад
       </Link>
-      <h3 className='text-2xl font-bold mb-2'>{post.title}</h3>
-      <p className='text-zinc-700 mb-6 leading-relaxed'>{post.body}</p>
+      <h3 className='text-2xl font-bold mb-2'>{post?.title}</h3>
+      <p className='text-zinc-700 mb-6 leading-relaxed'>{post?.body}</p>
       <div className='flex items-center gap-2 text-sm text-zinc-500 mb-6'>
         <span>Автор:</span>
         <Link
-          href={`/dashboard/users/${user.id}`}
+          href={`/dashboard/users/${user?.id}`}
           className='text-zinc-900 hover:underline'
         >
-          {user.name}
+          {user?.name}
         </Link>
       </div>
       <hr className='my-6 border-zinc-200' />

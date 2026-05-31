@@ -1,126 +1,92 @@
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
+import { prisma } from '@/lib/prisma';
+
 export const PHOTO_URL = 'https://picsum.dev/200/200?';
 
-// Базовые типы
-export interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
+export async function fetchPosts(page = 1, limit = 10) {
+  const posts = await prisma.post.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  return posts;
 }
 
-export interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-  };
-  address: {
-    street: string;
-    city: string;
-    zipcode: string;
-  };
+export async function fetchPost(id: string) {
+  const post = prisma.post.findUnique({
+    where: { id: Number(id) },
+  });
+
+  return post;
 }
 
-export interface Comment {
-  postId: number;
-  id: number;
-  name: string;
-  email: string;
-  body: string;
-}
-
-export interface Album {
-  userId: number;
-  id: number;
-  title: string;
-}
-
-export interface Photo {
-  albumId: number;
-  id: number;
-  title: string;
-  url: string;
-  thumbnailUrl: string;
-}
-
-export async function fetchPosts(page = 1, limit = 10): Promise<Post[]> {
-  const res = await fetch(`${BASE_URL}/posts?_page=${page}&_limit=${limit}`, {
-    next: {
-      revalidate: 60,
+export async function fetchComments(postId: string) {
+  const comments = prisma.comment.findMany({
+    where: {
+      postId: Number(postId),
     },
   });
 
-  if (!res.ok) throw new Error('Failed to fetch posts');
-  return res.json();
+  return comments;
 }
 
-export async function fetchPost(id: string): Promise<Post> {
-  const res = await fetch(`${BASE_URL}/posts/${id}`, {
-    next: {
-      revalidate: 60,
+export async function fetchUsers() {
+  const users = await prisma.user.findMany();
+
+  return users;
+}
+
+export async function fetchUser(id: string) {
+  const user = prisma.user.findUnique({
+    where: {
+      id: Number(id),
     },
   });
 
-  if (!res.ok) throw new Error('Failed to fetch post');
-  return res.json();
+  return user;
 }
 
-export async function fetchComments(postId: string): Promise<Comment[]> {
-  const res = await fetch(`${BASE_URL}/comments?postId=${postId}`);
+export async function fetchAlbums() {
+  const albums = await prisma.album.findMany();
 
-  if (!res.ok) throw new Error('Failed to fetch comments');
-  return res.json();
+  return albums;
 }
 
-export async function fetchUsers(): Promise<User[]> {
-  const res = await fetch(`${BASE_URL}/users`);
+export async function fetchAlbum(id: string) {
+  const album = prisma.album.findUnique({
+    where: {
+      id: Number(id),
+    },
+  });
 
-  if (!res.ok) throw new Error('Failed to fetch users');
-  return res.json();
+  return album;
 }
 
-export async function fetchUser(id: string): Promise<User> {
-  const res = await fetch(`${BASE_URL}/users/${id}`);
+export async function fetchPhotos(albumId: string) {
+  const photos = prisma.photo.findMany({
+    where: {
+      albumId: Number(albumId),
+    },
+  });
 
-  if (!res.ok) throw new Error('Failed to fetch user');
-  return res.json();
+  return photos;
 }
 
-export async function fetchAlbums(): Promise<Album[]> {
-  const res = await fetch(`${BASE_URL}/albums`);
+export async function fetchUserPosts(userId: string) {
+  const userPosts = prisma.post.findMany({
+    where: {
+      userId: Number(userId),
+    },
+  });
 
-  if (!res.ok) throw new Error('Failed to fetch albums');
-  return res.json();
+  return userPosts;
 }
 
-export async function fetchAlbum(id: string): Promise<Album> {
-  const res = await fetch(`${BASE_URL}/albums/${id}`);
+export async function fetchUserAlbums(userId: string) {
+  const userAlbums = prisma.album.findMany({
+    where: {
+      userId: Number(userId),
+    },
+  });
 
-  if (!res.ok) throw new Error('Failed to fetch album');
-  return res.json();
-}
-
-export async function fetchPhotos(albumId: string): Promise<Photo[]> {
-  const res = await fetch(`${BASE_URL}/photos?albumId=${albumId}`);
-
-  if (!res.ok) throw new Error('Failed to fetch photos');
-  return res.json();
-}
-
-export async function fetchUserPosts(userId: string): Promise<Post[]> {
-  const res = await fetch(`${BASE_URL}/posts?userId=${userId}`);
-  if (!res.ok) throw new Error('Failed to fetch user posts');
-  return res.json();
-}
-
-export async function fetchUserAlbums(userId: string): Promise<Album[]> {
-  const res = await fetch(`${BASE_URL}/albums?userId=${userId}`);
-  if (!res.ok) throw new Error('Failed to fetch user albums');
-  return res.json();
+  return userAlbums;
 }

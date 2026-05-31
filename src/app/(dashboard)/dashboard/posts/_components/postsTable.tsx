@@ -1,6 +1,6 @@
 'use client';
 
-import { Post } from '@/lib/api';
+import { Post } from '@/lib/types';
 import Link from 'next/link';
 import React, { useState } from 'react';
 

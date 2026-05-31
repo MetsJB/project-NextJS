@@ -45,7 +45,9 @@ const page = async ({ params }: UserProps) => {
       >
         {user.website}
       </Link>
-      <p className='text-sm text-zinc-600 mb-1'>{user.company.name}</p>
+      <p className='text-sm text-zinc-600 mb-1'>
+        {user?.company?.name ?? 'Здесь должно быть название кампании'}
+      </p>
       <div>
         <h3 className='text-lg font-semibold mt-6 mb-3'>Посты</h3>
         {posts.map((post) => (
