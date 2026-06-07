@@ -11,6 +11,8 @@ async function main() {
   await prisma.post.deleteMany();
   await prisma.user.deleteMany();
 
+await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name IN ('User', 'Post', 'Comment', 'Album', 'Photo')`;
+
   const user1 = await prisma.user.create({
     data: {
       name: 'Иван Петров',
@@ -62,22 +64,23 @@ async function main() {
   });
 
   console.log('✅ Пользователи созданы (5)');
+const users = [user1, user2, user3, user4, user5]
 
   const posts = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     const post = await prisma.post.create({
       data: {
         title: `Пост #${i + 1}: Заголовок статьи`,
         body: `Это текст поста номер ${
           i + 1
         }. Здесь может быть длинный контент статьи с полезной информацией для читателей.`,
-        userId: (i % 5) + 1, // распределяем по 5 пользователям
+        userId: users[i % users.length].id, // распределяем по 5 пользователям
       },
     });
     posts.push(post);
   }
 
-  console.log('✅ Посты созданы (10)');
+  console.log('✅ Посты созданы (100)');
 
   for (const post of posts) {
     await prisma.comment.create({
@@ -98,14 +101,14 @@ async function main() {
     });
   }
 
-  console.log('✅ Комментарии созданы (20)');
+  console.log('✅ Комментарии созданы (200)');
 
   const albums = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 0; i <users.length; i++) {
     const album = await prisma.album.create({
       data: {
-        title: `Альбом пользователя #${i}`,
-        userId: i,
+        title: `Альбом пользователя #${i+1}`,
+        userId: users[i].id,
       },
     });
     albums.push(album);

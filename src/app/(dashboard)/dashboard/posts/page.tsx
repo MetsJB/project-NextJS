@@ -1,5 +1,5 @@
 import PostsTable from './_components/postsTable';
-import { fetchPosts } from '@/lib/api';
+import { fetchAllPosts, fetchPosts } from '@/lib/api';
 import Link from 'next/link';
 
 interface PostsPage {
@@ -9,9 +9,10 @@ interface PostsPage {
 const page = async (props: PostsPage) => {
   const { searchParams } = props;
   const { page } = await searchParams;
+  const allPosts = (await fetchAllPosts()).length;
   const pageSearch = Number(page) || 1;
-
   const posts = await fetchPosts(pageSearch, 10);
+  const resLengthPages = allPosts % 10 ? Math.floor(allPosts / 10) + 1 : allPosts / 10 
 
   return (
     <>
@@ -37,7 +38,7 @@ const page = async (props: PostsPage) => {
           </Link>
         )}
 
-        {Array.from({ length: 10 }, (_, i) => {
+        {Array.from({ length: resLengthPages }, (_, i) => {
           const item = i + 1;
           const elem =
             pageSearch === item ? (
@@ -54,7 +55,7 @@ const page = async (props: PostsPage) => {
             );
           return <div key={i}>{elem}</div>;
         })}
-        {pageSearch === 10 ? (
+        {pageSearch === resLengthPages ? (
           <div className='text-zinc-300 px-3 py-1'>Вперед</div>
         ) : (
           <Link
