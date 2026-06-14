@@ -17,16 +17,14 @@ const sortedRes = (
   direction: SortDirection | undefined,
   search: string
 ) => {
-  let result = [...posts]; // копия, чтобы не мутировать оригинал
+  let result = [...posts];
 
-  // Фильтрация
   if (search) {
     result = result.filter((post) =>
       post.title.toLowerCase().includes(search.toLowerCase())
     );
   }
 
-  // Сортировка
   if (field && direction) {
     result.sort((a, b) => {
       const aVal = a[field];
@@ -62,19 +60,9 @@ const PostsTable = ({ posts }: PostsTableProps) => {
   };
 
   const handleSearch = (
-    event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSearch(event.target.value);
-  };
-
-  const handleId = () => {
-    handleSort('id');
-  };
-  const handleAuthor = () => {
-    handleSort('userId');
-  };
-  const handleTitle = () => {
-    handleSort('title');
   };
 
   const conditions = (field: SortField) => {
@@ -88,54 +76,65 @@ const PostsTable = ({ posts }: PostsTableProps) => {
   };
 
   const res = sortedRes(posts, sortField, sortDirection, search).map((post) => (
-    <tr className='hover:bg-zinc-50' key={post.id}>
-      <td className='p-2 border-b border-zinc-100'> {post.id}</td>
-      <td className='p-2 border-b border-zinc-100'> {post.title}</td>
-      <td className='p-2 border-b border-zinc-100'> {post.userId}</td>
-      <td className='p-2 border-b border-zinc-100'>
-        <Link href={`/dashboard/posts/${post.id}`}>Просмотр</Link>
+    <tr className='hover:bg-(--bg-hover) transition-colors' key={post.id}>
+      <td className='p-2 border-b border-(--border-color) text-(--text-secondary)'>
+        {post.id}
+      </td>
+      <td className='p-2 border-b border-(--border-color) text-(--text-primary)'>
+        {post.title}
+      </td>
+      <td className='p-2 border-b border-(--border-color) text-(--text-secondary)'>
+        {post.userId}
+      </td>
+      <td className='p-2 border-b border-(--border-color)'>
+        <Link
+          href={`/dashboard/posts/${post.id}`}
+          className='text-(--text-secondary) hover:text-(--text-primary) transition-colors'
+        >
+          Просмотр
+        </Link>
       </td>
     </tr>
   ));
 
   return (
     <>
-      <div className='flex justify-between  '>
+      <div className='flex justify-between items-center'>
         <input
           onChange={handleSearch}
           value={search}
           type='text'
-          className='w-full md:w-80 px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition mb-4'
+          className='w-full md:w-80 px-3 py-2 bg-(--bg-primary) text-(--text-primary) border border-(--border-color) rounded-lg focus:outline-none focus:ring-2 focus:ring-(--bg-active) focus:border-transparent transition mb-4 placeholder:text-(--text-secondary)'
           placeholder='Поиск по заголовку...'
         />
         {search && (
-          <p>
+          <p className='text-(--text-secondary) text-sm ml-4'>
             Найдено {res.length} из {posts.length}
           </p>
         )}
       </div>
-      <table className='border border-collapse  w-full '>
-        <thead className='border-b border-zinc-200'>
-          <tr className='hover:bg-zinc-50'>
+      <table className='border border-(--border-color) border-collapse w-full'>
+        <thead className='border-b border-(--border-color)'>
+          <tr>
             <th
-              onClick={handleId}
-              className=' cursor-pointer select-none hover:bg-zinc-100 transition-colors text-left p-2 text-sm text-zinc-500 font-medium'
+              onClick={() => handleSort('id')}
+              className='cursor-pointer select-none hover:bg-(--bg-hover) transition-colors text-left p-2 text-sm text-(--text-secondary) font-medium'
             >
               ID{conditions('id')}
             </th>
             <th
-              onClick={handleTitle}
-              className=' cursor-pointer select-none hover:bg-zinc-100 transition-colors text-left p-2 text-sm text-zinc-500 font-medium'
+              onClick={() => handleSort('title')}
+              className='cursor-pointer select-none hover:bg-(--bg-hover) transition-colors text-left p-2 text-sm text-(--text-secondary) font-medium'
             >
               Заголовок{conditions('title')}
             </th>
             <th
-              onClick={handleAuthor}
-              className=' cursor-pointer select-none hover:bg-zinc-100 transition-colors text-left p-2 text-sm text-zinc-500 font-medium'
+              onClick={() => handleSort('userId')}
+              className='cursor-pointer select-none hover:bg-(--bg-hover) transition-colors text-left p-2 text-sm text-(--text-secondary) font-medium'
             >
               Автор{conditions('userId')}
             </th>
-            <th className=' cursor-pointer select-none hover:bg-zinc-100 transition-colors text-left p-2 text-sm text-zinc-500 font-medium'>
+            <th className='text-left p-2 text-sm text-(--text-secondary) font-medium'>
               Действия
             </th>
           </tr>

@@ -49,6 +49,19 @@
 }
 
 :root {
+  /* Основные — тёплая светлая тема */
+  --bg-primary: #fcfcf9;
+  --bg-secondary: #f7f6f2;
+  --bg-hover: #efede7;
+  --bg-active: #1b1b18;
+  --text-active: #fcfcf9;
+  --text-primary: #1b1b18;
+  --text-secondary: #878680;
+  --border-color: #e8e6dc;
+  --accent: #f5a97f;
+  --accent-hover: #f08d5c;
+
+  /* shadcn (оставляем) */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -61,7 +74,7 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --accent-shadcn: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
@@ -84,6 +97,19 @@
 }
 
 .dark {
+  /* Основные — тёплая тёмная тема */
+  --bg-primary: #1a1917;
+  --bg-secondary: #201f1c;
+  --bg-hover: #2a2925;
+  --bg-active: #fcfcf9;
+  --text-active: #1a1917;
+  --text-primary: #e8e6dc;
+  --text-secondary: #878680;
+  --border-color: #2a2925;
+  --accent: #f5a97f;
+  --accent-hover: #f7b893;
+
+  /* shadcn (оставляем) */
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -96,7 +122,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
+  --accent-shadcn: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
@@ -124,7 +150,21 @@
   body {
     @apply bg-background text-foreground;
   }
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .card {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
   }
 }
