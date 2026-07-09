@@ -6,6 +6,24 @@ export interface Post {
   body: string;
 }
 
+export interface PostWithCommentCount extends Post {
+  _count: {
+    comments: number;
+  };
+}
+
+export interface UserWithPostsCount extends User {
+  _count: {
+    posts: number;
+  };
+}
+
+export interface CommentWithPostTitle extends Comment {
+  post: {
+    title: string;
+  };
+}
+
 export interface User {
   id: number;
   name: string;
@@ -13,11 +31,11 @@ export interface User {
   email: string;
   phone: string;
   website: string;
-  company: {
+  company?: {
     name: string;
     catchPhrase: string;
   };
-  address: {
+  address?: {
     street: string;
     city: string;
     zipcode: string;

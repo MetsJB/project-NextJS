@@ -52,7 +52,8 @@
   /* Основные — тёплая светлая тема */
   --bg-primary: #fcfcf9;
   --bg-secondary: #f7f6f2;
-  --bg-hover: #efede7;
+  --bg-additional: #efede7;
+  --bg-hover: #dddbd4;
   --bg-active: #1b1b18;
   --text-active: #fcfcf9;
   --text-primary: #1b1b18;
@@ -100,6 +101,7 @@
   /* Основные — тёплая тёмная тема */
   --bg-primary: #1a1917;
   --bg-secondary: #201f1c;
+  --bg-additional:#2d2b27;
   --bg-hover: #2a2925;
   --bg-active: #fcfcf9;
   --text-active: #1a1917;

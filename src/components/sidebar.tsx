@@ -9,6 +9,7 @@ const navItems = [
   { name: "Посты", path: "/dashboard/posts" },
   { name: "Пользователи", path: "/dashboard/users" },
   { name: "Альбомы", path: "/dashboard/albums" },
+  { name: "Аналитика", path: "/dashboard/analytics" },
   { name: "Настройки", path: "/settings" },
 ];
 
@@ -23,7 +24,7 @@ export function Sidebar() {
             className={cn(
               "px-4 py-2 text-(--text-secondary) hover:bg-(--bg-hover) hover:text-(--text-primary) transition-colors",
               {
-                'bg-(--bg-active) !text-(--text-active) font-medium':
+                'bg-(--bg-active) text-(--text-active)! font-medium':
                   item.path === pathname,
               },
             )}

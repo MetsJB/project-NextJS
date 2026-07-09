@@ -6,6 +6,7 @@ import { useActionState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreatePostFormData, createPostSchema } from "./schema";
+import { startTransition } from "react";
 
 const Page = () => {
   const [state, formAction, isPending] = useActionState(createPost, null);
@@ -13,7 +14,7 @@ const Page = () => {
   const {
     register,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm<CreatePostFormData>({
     resolver: zodResolver(createPostSchema),
   });
@@ -22,7 +23,7 @@ const Page = () => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("body", data.body);
-    formAction(formData)
+    startTransition(() => formAction(formData));
   };
 
   return (
@@ -40,13 +41,11 @@ const Page = () => {
         className="bg-white border border-zinc-200 rounded-xl p-6 space-y-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label
-          className="block text-sm font-medium text-zinc-700 mb-1"
-          htmlFor="title"
-        >
+        <label className="block text-sm font-medium text-zinc-700 mb-1" htmlFor="title">
           Заголовок
         </label>
         <input
+        autoComplete="off"
           id="title"
           {...register("title")}
           name="title"
@@ -56,12 +55,8 @@ const Page = () => {
         {errors.title && (
           <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>
         )}
-        <label
-          htmlFor="body"
-          className="block text-sm font-medium text-zinc-700 mb-1"
-        >
-          Текст
-        </label>
+
+        <label htmlFor="body">Текст</label>
         <textarea
           id="body"
           {...register("body")}
@@ -79,6 +74,7 @@ const Page = () => {
         >
           {isPending ? "Отправка..." : "Создать"}
         </button>
+
         {state?.error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
             {state.error.map((err, i) => (

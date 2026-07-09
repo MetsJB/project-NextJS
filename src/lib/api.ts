@@ -1,6 +1,6 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
 
-export const PHOTO_URL = 'https://picsum.dev/200/200?';
+// export const PHOTO_URL = "https://picsum.dev/200/200?";
 
 export async function fetchPosts(page = 1, limit = 10) {
   const posts = await prisma.post.findMany({
@@ -24,7 +24,6 @@ export async function fetchPost(id: string) {
 
   return post;
 }
-
 
 export async function fetchComments(postId: string) {
   const comments = prisma.comment.findMany({
@@ -102,4 +101,51 @@ export async function fetchUserAlbums(userId: string) {
   });
 
   return userAlbums;
+}
+
+export async function fetchPopularPostsByComments() {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  const posts = await prisma.post.findMany({
+    include: {
+      _count: { select: { comments: true } },
+    },
+    orderBy: { comments: { _count: "desc" } },
+    take: 5,
+  });
+
+  return posts;
+}
+
+export async function fetchRecentComments(limit: number) {
+  const recentComments = await prisma.comment.findMany({
+    include: {
+      post: { select: { title: true } },
+    },
+    orderBy: { id: "desc" },
+    take: limit,
+  });
+
+  return recentComments;
+}
+
+export async function fetchUserActivity() {
+
+  const users = await prisma.user.findMany({
+    include: {
+      _count: { select: { posts: true } },
+    },
+  });
+
+  return users;
+}
+
+export async function deletePost(id: number) {
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  await prisma.post.delete({
+    where: {
+      id: id,
+    },
+  });
 }

@@ -1,4 +1,4 @@
-const RecentPostsSkeleton = async () => {
+const RecentPostsSkeleton =  () => {
   return (
     <div className='bg-(--bg-primary) border border-(--border-color) rounded-lg p-4'>
       {Array.from({ length: 5 }, (_, i) => (
