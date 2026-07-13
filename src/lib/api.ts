@@ -104,7 +104,7 @@ export async function fetchUserAlbums(userId: string) {
 }
 
 export async function fetchPopularPostsByComments() {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const posts = await prisma.post.findMany({
     include: {
@@ -130,6 +130,7 @@ export async function fetchRecentComments(limit: number) {
 }
 
 export async function fetchUserActivity() {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
 
   const users = await prisma.user.findMany({
     include: {
@@ -141,7 +142,8 @@ export async function fetchUserActivity() {
 }
 
 export async function deletePost(id: number) {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // throw new Error("Delete post error");
 
   await prisma.post.delete({
     where: {
