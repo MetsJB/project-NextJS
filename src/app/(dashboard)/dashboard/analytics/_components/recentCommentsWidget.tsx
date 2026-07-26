@@ -2,7 +2,7 @@
 
 import RecentCommentsWidgetSkeletons from "@/app/(dashboard)/dashboard/analytics/_components/skeletons/RecentCommentsWidgetSkeletons";
 import { useRecentComments } from "@/hooks/tanstack";
-import { CommentWithPostTitle } from "@/lib/types";
+import { CommentWithPostTitle } from "@/types/types";
 import Link from "next/link";
 
 const RecentCommentItem = ({ comment }: { comment: CommentWithPostTitle }) => {

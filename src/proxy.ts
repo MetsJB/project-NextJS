@@ -1,19 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
-export default function proxy(request: NextRequest) {
-  const username = request.cookies.get('username')?.value;
+export default auth((req) => {
+  const isLoggedIn = !!req.auth;
+  const isDashboardRoute = req.nextUrl.pathname.startsWith("/dashboard");
+  const isLoginRoute = req.nextUrl.pathname.startsWith("/login");
 
-  if (!username && request.nextUrl.pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  if (!isLoggedIn && isDashboardRoute) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (username && request.nextUrl.pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+  if (isLoggedIn && isLoginRoute) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login'],
+  matcher: ["/dashboard/:path*", "/login"],
 };

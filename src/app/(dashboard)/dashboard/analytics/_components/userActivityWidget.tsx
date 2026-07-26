@@ -2,7 +2,7 @@
 
 import UserActivityWidgetSkeletons from "@/app/(dashboard)/dashboard/analytics/_components/skeletons/UserActivityWidgetSkeletons";
 import { useUserActivity } from "@/hooks/tanstack";
-import { UserWithPostsCount } from "@/lib/types";
+import { UserWithPostsCount } from "@/types/types";
 
 const UserItem = ({ user }: { user: UserWithPostsCount }) => {
   return (
@@ -39,7 +39,9 @@ const UserActivityWidget = () => {
         </button>
       </div>
       <div className="grid grid-cols-1 gap-y-6 ">
-        {(!data || isLoading) && !isError && <UserActivityWidgetSkeletons countSkeletons={5}/>}
+        {(!data || isLoading) && !isError && (
+          <UserActivityWidgetSkeletons countSkeletons={5} />
+        )}
 
         {isError && !isLoading && (
           <div className="text-red-500 w-fit  conte bg-(--bg-secondary) rounded-md px-2 py-1">

@@ -2,9 +2,16 @@
 
 import PopularPostsWidgetSkeletons from "@/app/(dashboard)/dashboard/analytics/_components/skeletons/PopularPostsWidgetSkeletons";
 import { useDeletePost, usePopularPosts } from "@/hooks/tanstack";
-import { PostWithCommentCount } from "@/lib/types";
+import { PostWithCommentCount } from "@/types/types";
+import { useSession } from "next-auth/react";
 
-const PostItem = ({ post }: { post: PostWithCommentCount }) => {
+const PostItem = ({
+  post,
+  isAdmin,
+}: {
+  post: PostWithCommentCount;
+  isAdmin: boolean;
+}) => {
   const {
     mutate: deletePostMutate,
     isPending: isPendingMutate,
@@ -21,18 +28,20 @@ const PostItem = ({ post }: { post: PostWithCommentCount }) => {
           {post._count.comments}
         </span>
       </p>
-      <button
-        className={`text-sm px-2 py-1 rounded-md cursor-pointer border ${
-          isPendingMutate
-            ? "bg-accent"
-            : "text-(--text-primary) border-(--bg-hover) bg-(--bg-additional) hover:bg-(--bg-hover) transition-colors"
-        }`}
-        onClick={() => {
-          deletePostMutate(post.id);
-        }}
-      >
-        {isPendingMutate ? "Удаление..." : "Удалить"}
-      </button>
+      {isAdmin && (
+        <button
+          className={`text-sm px-2 py-1 rounded-md cursor-pointer border ${
+            isPendingMutate
+              ? "bg-accent"
+              : "text-(--text-primary) border-(--bg-hover) bg-(--bg-additional) hover:bg-(--bg-hover) transition-colors"
+          }`}
+          onClick={() => {
+            deletePostMutate(post.id);
+          }}
+        >
+          {isPendingMutate ? "Удаление..." : "Удалить"}
+        </button>
+      )}
       {isErrorMutate && (
         <span>
           Удаление поста не удалось. Попробуйте позже.
@@ -45,6 +54,8 @@ const PostItem = ({ post }: { post: PostWithCommentCount }) => {
 
 const PopularPostsWidget = () => {
   const { data, isLoading, isError, refetch, isRefetching } = usePopularPosts();
+  const { data: session } = useSession();
+  const isAdmin = session?.user.role === "admin";
 
   return (
     <div className="bg-(--bg-primary) border border-(--border-color) rounded-xl p-6">
@@ -73,7 +84,9 @@ const PopularPostsWidget = () => {
 
         {!isLoading &&
           !isError &&
-          data?.map((post) => <PostItem key={post.id} post={post} />)}
+          data?.map((post) => (
+            <PostItem key={post.id} post={post} isAdmin={isAdmin} />
+          ))}
       </div>
     </div>
   );

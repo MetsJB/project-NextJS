@@ -1,12 +1,11 @@
 "use client";
 
 import { createPost } from "@/app/(dashboard)/dashboard/posts/create/actions";
-import Link from "next/link";
-import { useActionState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { startTransition, useActionState } from "react";
+import { useForm } from "react-hook-form";
 import { CreatePostFormData, createPostSchema } from "./schema";
-import { startTransition } from "react";
 
 const Page = () => {
   const [state, formAction, isPending] = useActionState(createPost, null);
@@ -41,11 +40,14 @@ const Page = () => {
         className="bg-white border border-zinc-200 rounded-xl p-6 space-y-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <label className="block text-sm font-medium text-zinc-700 mb-1" htmlFor="title">
+        <label
+          className="block text-sm font-medium text-zinc-700 mb-1"
+          htmlFor="title"
+        >
           Заголовок
         </label>
         <input
-        autoComplete="off"
+          autoComplete="off"
           id="title"
           {...register("title")}
           name="title"

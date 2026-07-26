@@ -1,18 +1,17 @@
-import { prisma } from '@/lib/prisma';
-import { NextRequest, NextResponse } from 'next/server';
+import errorAuthentication from "@/lib/auth/checkAuth";
+import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  console.log('Загрузка');
-  await new Promise((resolve) => {
-    setTimeout(() => resolve(''), 1500);
-  });
-  console.log('Завершена');
+  const errorAuth = await errorAuthentication();
+  if (errorAuth) return errorAuth;;
+ 
 
   const { searchParams } = new URL(request.url);
-  const albumId = searchParams.get('albumId');
+  const albumId = searchParams.get("albumId");
 
   if (!albumId) {
-    return NextResponse.json({ error: 'albumId is required' }, { status: 400 });
+    return NextResponse.json({ error: "albumId is required" }, { status: 400 });
   }
 
   const photos = await prisma.photo.findMany({

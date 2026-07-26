@@ -7,14 +7,36 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String
-  username String  @unique
-  email    String
-  phone    String
-  website  String
-  posts    Post[]
-  albums   Album[]
+  id           Int       @id @default(autoincrement())
+  name         String
+  username     String    @unique
+  email        String
+  phone        String
+  website      String
+  role         String    @default("user")
+  passwordHash String?
+  company      Company?
+  address      Address?
+  posts        Post[]
+  albums       Album[]
+  refreshToken RefreshToken[]
+}
+
+model Company {
+  id          Int    @id @default(autoincrement())
+  name        String
+  catchPhrase String
+  userId      Int    @unique
+  user        User   @relation(fields: [userId], references: [id])
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  street  String
+  city    String
+  zipcode String
+  userId  Int    @unique
+  user    User   @relation(fields: [userId], references: [id])
 }
 
 model Post {
@@ -50,3 +72,15 @@ model Photo {
   albumId Int
   album   Album  @relation(fields: [albumId], references: [id])
 }
+
+
+model RefreshToken {
+  id String @id @default(uuid())
+  token String @unique
+  userId Int
+  user User @relation(fields: [userId], references: [id], onDelete:  Cascade)
+  family String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+

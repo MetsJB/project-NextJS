@@ -1,24 +1,39 @@
-'use server';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use server";
 
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { signIn } from "@/auth";
+import { redirect } from "next/navigation";
 
-export async function login(
-  prevState: { error: string } | null,
-  formData: FormData
-) {
-  const username = formData.get('username') as string;
+export type LoginState = {
+  success: boolean;
+  error: string | null;
+};
 
-  if (!username || username.trim() === '') {
-    return { error: 'Имя обязательно' };
+export async function login(prevState: LoginState | null, formData: FormData) {
+  const username = formData.get("username") as string;
+  const password = formData.get("password") as string;
+
+  if (
+    !username ||
+    username.trim() === "" ||
+    !password ||
+    password.trim() === ""
+  ) {
+    return { error: "Заполните все поля", success: false };
   }
 
-  if (username.trim() !== 'zahar') {
-    return { error: 'Неверное имя' };
+  try {
+    await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
+  } catch (error) {
+    return {
+      success: false,
+      error: "Неверный логин или пароль",
+    };
   }
 
-  const cookieStore = await cookies();
-  cookieStore.set('username', username.trim());
-
-  redirect('/dashboard');
+   return { success: true, error: null };
 }

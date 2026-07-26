@@ -6,7 +6,7 @@ import {
   getUserActivity,
   removePost,
 } from "@/actions/posts";
-import { Post } from "@/lib/types";
+import { Post } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 const POPULAR_POSTS_KEY = "popularPosts";

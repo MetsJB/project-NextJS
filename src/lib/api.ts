@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
-// export const PHOTO_URL = "https://picsum.dev/200/200?";
+export const PHOTO_URL = "https://picsum.dev/200/200?";
 
 export async function fetchPosts(page = 1, limit = 10) {
   const posts = await prisma.post.findMany({
@@ -42,7 +42,12 @@ export async function fetchAllComments() {
 }
 
 export async function fetchUsers() {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    include: {
+      address: true,
+      company: true,
+    },
+  });
 
   return users;
 }
@@ -51,6 +56,10 @@ export async function fetchUser(id: string) {
   const user = prisma.user.findUnique({
     where: {
       id: Number(id),
+    },
+    include: {
+      company: true,
+      address: true,
     },
   });
 
@@ -104,8 +113,6 @@ export async function fetchUserAlbums(userId: string) {
 }
 
 export async function fetchPopularPostsByComments() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
   const posts = await prisma.post.findMany({
     include: {
       _count: { select: { comments: true } },
@@ -130,8 +137,6 @@ export async function fetchRecentComments(limit: number) {
 }
 
 export async function fetchUserActivity() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
   const users = await prisma.user.findMany({
     include: {
       _count: { select: { posts: true } },
@@ -142,9 +147,6 @@ export async function fetchUserActivity() {
 }
 
 export async function deletePost(id: number) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  // throw new Error("Delete post error");
-
   await prisma.post.delete({
     where: {
       id: id,

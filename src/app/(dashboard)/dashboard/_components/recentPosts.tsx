@@ -1,7 +1,6 @@
 import { fetchPosts } from '@/lib/api';
 
 const RecentPosts = async () => {
-  await new Promise((resolve) => setTimeout(() => resolve(''), 2000));
   const posts = await fetchPosts(1, 5);
 
   return (
