@@ -1,4 +1,6 @@
+import { createRefreshToken } from "@/lib/auth/refreshToken";
 import { prisma } from "@/lib/prisma";
+import { UserRole } from "@/types/types";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -33,7 +35,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           id: String(user.id),
           name: user.name,
           username: user.username,
-          role: user.role,
+          role: user.role as UserRole,
         };
       },
     }),
@@ -50,8 +52,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         token.role = user.role;
       }
 
-      token
-
       return token;
     },
 
@@ -63,6 +63,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
 
       return session;
+    },
+    signIn: async ({ user }) => {
+      if (user.id) {
+        await createRefreshToken(Number(user.id));
+      }
+
+      return true;
     },
   },
   pages: {

@@ -1,3 +1,5 @@
+import { ROLES } from "../../prisma/seed";
+
 // Базовые типы
 export interface Post {
   userId: number;
@@ -23,6 +25,8 @@ export interface CommentWithPostTitle extends Comment {
     title: string;
   };
 }
+
+export type UserRole = (typeof ROLES)[keyof typeof ROLES];
 
 export interface User {
   id: number;

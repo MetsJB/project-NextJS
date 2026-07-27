@@ -1,10 +1,15 @@
-import { PrismaClient } from "@prisma/client";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 const hashedPassword = await bcrypt.hash("123", 10);
+
+ export const ROLES = {
+  ADMIN: "admin",
+  USER: "user",
+} as const;
 
 async function main() {
   await prisma.photo.deleteMany();
@@ -15,6 +20,7 @@ async function main() {
 
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name IN ('User', 'Post', 'Comment', 'Album', 'Photo')`;
 
+
   const user1 = await prisma.user.create({
     data: {
       name: "Иван Петров",
@@ -22,7 +28,7 @@ async function main() {
       email: "ivan@example.com",
       phone: "+7-999-123-45-67",
       website: "ivan.ru",
-      role: 'admin',
+      role: ROLES.ADMIN,
       passwordHash: hashedPassword,
     },
   });
