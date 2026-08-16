@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
-import PostsTable from "./_components/postsTable";
 import { fetchAllPosts, fetchPosts } from "@/lib/api";
 import Link from "next/link";
+import PostsTable from "./_components/postsTable";
+import { cookies } from 'next/headers';
+import { verifyAccessToken } from '@/lib/auth/jwt';
 
 interface PostsPage {
   searchParams: Promise<{ page: string }>;
@@ -9,14 +10,16 @@ interface PostsPage {
 
 const page = async (props: PostsPage) => {
   const { searchParams } = props;
-  const session = await auth();
+  const cookieStore = await cookies();
+  const token = cookieStore.get('accessToken')?.value;
+  const session = token ? await verifyAccessToken(token) : null;
+  const isAdmin = session?.role === 'admin';
   const { page } = await searchParams;
   const allPosts = (await fetchAllPosts()).length;
   const pageSearch = Number(page) || 1;
   const posts = await fetchPosts(pageSearch, 10);
   const resLengthPages =
     allPosts % 10 ? Math.floor(allPosts / 10) + 1 : allPosts / 10;
-  const isAdmin = session?.user.role === "admin";
 
   return (
     <>

@@ -82,5 +82,6 @@ model RefreshToken {
   family String
   expiresAt DateTime
   createdAt DateTime @default(now())
+  revokedAt DateTime? 
 }
 

@@ -17,6 +17,7 @@ async function main() {
   await prisma.album.deleteMany();
   await prisma.post.deleteMany();
   await prisma.user.deleteMany();
+  
 
   await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name IN ('User', 'Post', 'Comment', 'Album', 'Photo')`;
 

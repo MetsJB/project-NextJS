@@ -1,17 +1,13 @@
-import errorAuthentication from "@/lib/auth/checkAuth";
-import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from '@/lib/auth/withAuth';
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  const errorAuth = await errorAuthentication();
-  if (errorAuth) return errorAuth;;
- 
-
+export const GET = withAuth(async (request, payload) => {
   const { searchParams } = new URL(request.url);
-  const albumId = searchParams.get("albumId");
+  const albumId = searchParams.get('albumId');
 
   if (!albumId) {
-    return NextResponse.json({ error: "albumId is required" }, { status: 400 });
+    return NextResponse.json({ error: 'albumId is required' }, { status: 400 });
   }
 
   const photos = await prisma.photo.findMany({
@@ -21,4 +17,4 @@ export async function GET(request: NextRequest) {
   });
 
   return NextResponse.json(photos);
-}
+});

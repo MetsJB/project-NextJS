@@ -1,23 +1,22 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/themeProvider";
-import QueryProvider from "@/components/queryProvider";
-import AuthSessionProvider from "@/components/sessionProvider";
+import QueryProvider from '@/components/queryProvider';
+import { ThemeProvider } from '@/components/themeProvider';
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "NextDash — Админ-панель",
-  description: "Административная панель на Next.js 15",
+  title: 'NextDash — Админ-панель',
+  description: 'Административная панель на Next.js 15',
 };
 
 export default function RootLayout({
@@ -27,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang='en'
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
@@ -47,11 +46,9 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="h-screen ">
+      <body className='h-screen '>
         <QueryProvider>
-          <ThemeProvider>
-            <AuthSessionProvider>{children}</AuthSessionProvider>
-          </ThemeProvider>
+          <ThemeProvider>{children}</ThemeProvider>
         </QueryProvider>
       </body>
     </html>

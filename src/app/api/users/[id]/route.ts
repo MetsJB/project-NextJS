@@ -1,22 +1,18 @@
-import errorAuthentication from "@/lib/auth/checkAuth";
-import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from '@/lib/auth/withAuth';
+import { NextResponse } from 'next/server';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const errorAuth = await errorAuthentication();
-  if (errorAuth) return errorAuth;
+export const GET = withAuth<RouteContext<'/api/users/[id]'>>(
+  async (request, payload, { params }) => {
+    const { id = 1 } = await params;
 
-  const { id = 1 } = await params;
+    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
 
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+    if (!res.ok) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    }
 
-  if (!res.ok) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
-  }
+    const data = await res.json();
 
-  const data = await res.json();
-
-  return NextResponse.json(data);
-}
+    return NextResponse.json(data);
+  },
+);

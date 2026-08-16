@@ -1,17 +1,15 @@
-import errorAuthentication from "@/lib/auth/checkAuth";
-import { NextResponse } from "next/server";
-
-export async function GET() {
-  const errorAuth = await errorAuthentication();
-  if (errorAuth) return errorAuth;
+import { withAuth } from '@/lib/auth/withAuth';
+import { NextResponse } from 'next/server';
+ 
+export const GET = withAuth(async (request, payload) => {
 
   const res = await fetch(`https://jsonplaceholder.typicode.com/users`);
 
   if (!res.ok) {
-    return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
   }
 
   const data = await res.json();
 
   return NextResponse.json(data);
-}
+})

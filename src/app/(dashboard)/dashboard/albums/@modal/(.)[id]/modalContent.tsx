@@ -1,5 +1,6 @@
 'use client';
 
+import { fetchWithAuth } from '@/lib/auth/fetchWithAuth';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -9,7 +10,7 @@ const ModalContent = ({ id }: { id: string }) => {
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`/api/photos?albumId=${id}`)
+    fetchWithAuth(`/api/photos?albumId=${id}`)
       .then((res) => res.json())
       .then((data) =>
         setPhotosLoad(`Загружено, количество фото: ${data.length}`)
