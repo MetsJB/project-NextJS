@@ -1,6 +1,6 @@
 import {z} from 'zod'
 
-export const createPostSchema = z.object({
+export const createPostSchema = z.object({ 
     title: z.string()
     .min(3, 'Заголовок должен быть минимум 3 символа')
     .max(100, 'Заголовок должен быть не длиннее 100 символов'),

@@ -9,6 +9,7 @@ export default async function proxy(request: NextRequest) {
   const isLoginRoute = request.nextUrl.pathname.startsWith('/login');
   const isDashboardRoute = request.nextUrl.pathname.startsWith('/dashboard');
 
+
   if (accessToken && isLoginRoute) {
     const validPayload = await verifyAccessToken(accessToken);
     if (validPayload) {

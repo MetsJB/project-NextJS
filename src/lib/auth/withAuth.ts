@@ -6,7 +6,7 @@ type Handler<Context> = (
   request: NextRequest,
   payload: JWTdata | JWTPayload,
   context: Context,
-) => Promise<NextResponse> | NextResponse;
+) => Promise<Response> | Response;
 
 export function withAuth<Context= unknown>(handler: Handler<Context>, options?: {role?:string}) {
     return async (request: NextRequest, context: Context) => {

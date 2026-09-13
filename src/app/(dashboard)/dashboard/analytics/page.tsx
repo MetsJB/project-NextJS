@@ -1,8 +1,9 @@
-import UserActivityWidget from '@/app/(dashboard)/dashboard/analytics/_components/userActivityWidget';
-import PopularPostsWidget from './_components/popularPostsWidget';
 import RecentCommentsWidget from '@/app/(dashboard)/dashboard/analytics/_components/recentCommentsWidget';
-import { cookies } from 'next/headers';
+import UserActivityWidget from '@/app/(dashboard)/dashboard/analytics/_components/userActivityWidget';
 import { verifyAccessToken } from '@/lib/auth/jwt';
+import { cookies } from 'next/headers';
+import PopularPostsWidget from './_components/popularPostsWidget';
+import { Chat } from '@/components/chat';
 
 const page = async () => {
   const data: Record<string, unknown> = {};
@@ -11,7 +12,6 @@ const page = async () => {
 
   if (token) {
     const payload = await verifyAccessToken(token);
-    console.log('AAAA', payload);
     data.role = payload?.role;
   }
 
@@ -25,6 +25,7 @@ const page = async () => {
         <UserActivityWidget />
         <RecentCommentsWidget />
       </div>
+      <Chat />
     </div>
   );
 };
